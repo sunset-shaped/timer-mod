@@ -1,25 +1,17 @@
-extends CanvasLayer
+extends CanvasLayer #actually this can be any node since it's not doing anything
 
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+var base:Node #important! you should do this for every mod. create the node for base where you can get access to almost everything
 
-var base:Node
-var text:Node
-
-onready var pos = $Control
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	base = get_node("/root/base")
-	text = load("res://level stuff/text.tscn").instance()
-	pos.add_child(text)
-	print("A")
+	base = get_node("/root/base") #define base. always do this
 	
-	pos.position = Vector2(5, 5)
 
 func _process(delta):
-	text.bbcode_text = make_time(base.timer)
+	#every frame, we update timer and send it to base
+	#the set_hud_text function should be used if your mod only has one value to update. this makes it compatible with the other mods.
+	base.set_hud_text("timer", make_time(base.timer))
+	#use the make_time function to turn the time into a string
 	
 
 func make_time(timetaken):
@@ -35,6 +27,3 @@ func make_time(timetaken):
 	else:
 		return "%d:%02d:%02d.%02d" % [hr, mn, sc, mls]
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
